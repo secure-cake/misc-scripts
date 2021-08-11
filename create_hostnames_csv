@@ -1,0 +1,3 @@
+     Import-Module AciveDirectory
+     Get-ADGroupMember Your_AD_Group_Name_Goes_Here | %{Get-ADComputer $_} | ?{$_.enabled -eq $true} `
+     | Select name | Export-CSV C:\Temp\hostnames.csv -NoTypeInformation
