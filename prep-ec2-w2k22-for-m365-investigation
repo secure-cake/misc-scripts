@@ -1,0 +1,12 @@
+#enable scripts by running command below manually or launch and run in ISE
+#Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+#set password for User
+#RUN FROM PowerShell 5 - install Azure AD PowerShell and MSOnline
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+install-module -name azuread -Repository psgallery -force
+install-module -name msonline -repository psgallery -force
+#download and install PowerShell 7.x.x - msi
+iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet"
+#RUN FROM PowerShell v7 (pwsh) - install exchangeonline management and graph api...be patient...takes a few minutes and since using pwsh - no progress indicators
+& "C:\Program Files\PowerShell\7\pwsh.exe" -Command Install-Module -name exchangeonlinemanagement -repository psgallery -force
+& "C:\Program Files\PowerShell\7\pwsh.exe" -Command Install-Module -name microsoft.graph -scope allusers -repository psgallery -force
