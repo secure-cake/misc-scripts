@@ -1,0 +1,34 @@
+#navigate to KAPE exe folder before running script
+#if prompted to save in Excel, click don't save
+#invoke-kape script must be in the kape diretory
+. .\Invoke-Kape.ps1
+#change three variables below for casename, triage dir and output dir
+$casename = '2023-0829-abccase'
+$triage_data_directory = "D:\cases\$casename\triage_data"
+$kape_destination_directory = "D:\cases\$casename\kape_output"
+(get-childitem -Directory $triage_data_directory).name | ForEach-Object {
+    Invoke-Kape -msource $triage_data_directory\$_\uploads\auto\C%3A -mdest $kape_destination_directory\$_ -Module ObsidianForensics_Hindsight,NirSoft_BrowsingHistoryView,NirSoft_WebBrowserDownloads,AppCompatCacheParser,PECmd,AmcacheParser,SBECmd -mvars csv
+    Invoke-Kape -msource $triage_data_directory\$_\uploads\auto\C%3A -mdest $kape_destination_directory\$_'-evtx' -Module EvtxECmd,hayabusa_LogonSummary,hayabusa_OfflineEventLogs,hayabusa_OfflineLogonSummary,hayabusa_UpdateRules -mvars csv
+    #Uncomment the line below to process MFT...not rolled up into Excel
+    Invoke-Kape -msource $triage_data_directory\$_\uploads\ntfs\%5C%5C.%5CC%3A -mdest "$kape_destination_directory\$_-mft" -Module 'MFTECmd_$MFT' -mvars csv
+    #Bulk Extractor is slow...so uncomment the line below as desired
+    Invoke-Kape -msource $triage_data_directory\$_\uploads\auto\C%3A -mdest "$kape_destination_directory\$_-be" -Module Bulk_extractor -mvars csv
+    #Combines all csv and xls files into a workbook per station...not including MFT or Bulk_Extractor
+    $ExcelObject=New-Object -ComObject excel.application
+    $ExcelObject.visible=$true
+    $ExcelFiles=Get-ChildItem -Path $kape_destination_directory\$_ -Recurse -Include *.csv, *.xls, *.xlsx
+
+    $Workbook=$ExcelObject.Workbooks.add()
+    $Worksheet=$Workbook.Sheets.Item("Sheet1")
+
+    foreach($ExcelFile in $ExcelFiles){
+ 
+        $Everyexcel=$ExcelObject.Workbooks.Open($ExcelFile.FullName)
+        $Everysheet=$Everyexcel.sheets.item(1)
+        $Everysheet.Copy($Worksheet)
+    $Everyexcel.Close()
+ 
+    }
+$Workbook.SaveAs("$kape_destination_directory\$_-kape.xlsx")
+$ExcelObject.Quit()
+}
