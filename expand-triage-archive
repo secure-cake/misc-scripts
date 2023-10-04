@@ -1,0 +1,10 @@
+
+#use PowerShell 7.x
+$casename = '2023-0829-abccase'
+$compressed_triage_data = "D:\cases\$casename\triage_data_compressed"
+$unzipped_triage_data = "D:\cases\$casename\triage_data"
+
+(get-childitem -path $compressed_triage_data -filter *.zip).basename | ForEach-Object {
+    
+    Expand-Archive -path $compressed_triage_data\$_.zip -DestinationPath $unzipped_triage_data\$_ -Force
+}
