@@ -15,3 +15,6 @@ https://support.microsoft.com/en-us/office/filter-by-using-advanced-criteria-4c9
 #### Windows Malware Investigations: 
 https://www.youtube.com/live/TsTBnAo07ks?si=lSdHIy2obO3k5igL<br />
 https://github.com/secure-cake/win-mal-investigations
+
+#### Rapid Endpoint Investigations
+https://github.com/secure-cake/rapid-endpoint-investigations
