@@ -1,5 +1,5 @@
 #Define the source and destination path\file
-$csv = "D:\cases\path-to-sourcer-csv\EventLogs\2023082_EvtxECmd_Output.csv " #Location of the source file
+$csv = "D:\cases\path-to-source-csv\EventLogs\2023082_EvtxECmd_Output.csv " #Location of the source file
 $xlsx = "D:\cases\path-to-destination-xlsx\EVTX_CSV_To_XLS.xlsx" #Desired location of output
 #For csv, the delimiter is usually a comma, but for log2timeline, etc. could be pipe, etc. 
 $delimiter = "," 
